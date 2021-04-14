@@ -1,0 +1,72 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<div class="container mb-4 mt-4">
+    <div class="row mb-3">
+        <h1 class=" col-10 text-capitalize">{{username.username}}</h1>
+        {%if user != username %}
+            <button class="btn btn-primary col-2" id="{{username.id}}" onclick="follow('{{username.id}}')">{{f_un_f}}</button>
+        {% endif %}
+        </div>
+    <div class="row">
+        <span class="col-3 text-center">Followers:</span>
+        <span class=" col-3" id="followers">{{followers}}</span>
+        <span class="col-3 text-center">Follows:</span>
+        <span class="col-3" id="followed">{{followed}}</span>
+    </div>
+    <div><hr></div>
+</div>
+
+{% if user.id == username.id %}
+   <div class="container mb-3 mt-3" id="new-post">
+       <span><strong>+</strong></span>
+        <span>Create New Post</span>
+    </div>
+    <div class="container mb-2" id="post-area-div">
+        <textarea name="post-area" id="post-area" cols="70" rows="6" placeholder="Write your post here!"></textarea>
+        <button class="btn btn-outline-primary" id="post-submit">Submit</button>
+    </div>
+{% endif %}
+
+    <div class="container border-animation" id="new-post-div"></div>
+
+{% for post in posts %}
+    <div class="container" id="{{post.id}}">
+        <div class="row">
+            <span class="col-9">
+                <a href="{% url 'profile' post.creator%}" >
+                    <div id="profile"><h5>{{post.creator}}:</h5></div>
+                </a>
+            </span>
+            {% if post.creator == user%}
+                <span class="col-3">
+                    <div class=" dropdown dropright">
+                        <button type="button" class="btn btn-outline-primary pl-1 pr-1 pt-0 pb-0 dropdown-toggle" data-toggle="dropdown">
+                            <i style="font-size:18px" class="fa">&#xf040;</i>
+                        </button>
+                        <div class=" dropdown-menu">
+                            <p class=" dropdown-item cursor" id="edit-{{post.id}}" data-id="{{post.id}}">Edit</p>
+                            <p class=" dropdown-item cursor" id="delete-{{post.id}}" data-id="{{post.id}}">Delete</p>
+                        </div>
+                    </div>
+                </span>
+            {% endif %}
+        </div>
+        <div class="row" id="body-{{post_id}}">
+            <div class="col-12 pb-3" >{{post.post_body}}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <span class=" m-1" id="{{post.id}}" data-postId="{{post_id}}">{{post.likes.all.count}}</span>
+                <span onclick="like('{{post.id}}')" class="cursor" >&#128077;</span>
+            </div>
+            
+            <span class="col-9">{{post.date}}</span>
+        </div>
+        <hr>
+    </div>
+{% endfor %}
+
+
+{% endblock %}

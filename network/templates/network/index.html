@@ -1,0 +1,74 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% if user.is_authenticated %}
+   <div class="container mb-3 mt-3" id="new-post">
+       <span><strong>+</strong></span>
+        <span>Create New Post</span>
+    </div>
+    <div class="container mb-5" id="post-area-div">
+        <div>
+            <textarea name="post-area" id="post-area" cols="70" rows="6" placeholder="Write your post here!"></textarea>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary" id="post-submit">Submit</button>
+        </div>
+    </div>
+{% endif %}
+<div class="container border-animation " id="new-post-div"></div>
+
+{% for post in posts %}
+    <div class="container " id="{{post.id}}">
+        <div class="row">
+            <span class="col-9">
+                <a href="{% url 'profile' post.creator%}" >
+                    <div id="profile"><h5>{{post.creator}}:</h5></div>
+                </a>
+            </span>
+            {% if post.creator == user%}
+                <span class="col-3">
+                    <div class=" dropdown dropright">
+                        <button type="button" class="btn btn-outline-primary pl-1 pr-1 pt-0 pb-0 dropdown-toggle" data-toggle="dropdown">
+                            <i style="font-size:18px" class="fa">&#xf040;</i>
+                        </button>
+                        <div class=" dropdown-menu">
+                            <p class=" dropdown-item cursor" id="edit-{{post.id}}" onclick="editPost('{{post.id}}')">Edit</p>
+                            <p class=" dropdown-item cursor" id="delete-{{post.id}}"  onclick="deletePost('{{post.id}}')">Delete</p>
+                        </div>
+                    </div>
+                </span>
+            {% endif %}
+        </div>
+        <div class="row "id="body-{{post.id}}">
+            <div class="col-12 pb-3"id="body-post{{post.id}}" >{{post.post_body}}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <span class=" m-1" id="{{post.id}}" data-postId="{{post_id}}">{{post.likes.all.count}}</span>
+                <span onclick="like('{{post.id}}')" class="cursor" >&#128077;</span>
+            </div>
+            
+            <span class="col-9">{{post.date}}</span>
+        </div>
+        <hr>
+    </div>
+    {% endfor %}
+    <div class="pagination justify-content-center p-2">
+        <span class="step-pnks">
+            {% if posts.has_previous %}
+                <a class="btn btn-outline-primary" href="?page=1">&laquo; First</a>
+                <a class="btn btn-outline-primary" href="?page={{ posts.previous_page_number }}">Previous</a>
+            {% endif %}
+    
+            <span class="current btn-outline-primary">
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+            </span>
+    
+            {% if posts.has_next %}
+                <a class="btn btn-outline-primary" href="?page={{ posts.next_page_number }}">Next</a>
+                <a class="btn btn-outline-primary" href="?page={{ posts.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock %}

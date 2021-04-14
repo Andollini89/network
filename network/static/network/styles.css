@@ -1,0 +1,45 @@
+
+@keyframes green-border {
+    0%{
+        box-shadow: none;
+        background-color: inherit;
+    }
+    50%{
+        box-shadow: 0 0 10 green;
+        background-color: green;
+    }
+    100%{
+        box-shadow: 0 0 10 rgba(0, 128, 0, 0.431);
+        background-color: inherit;
+    }
+}
+
+#new-post:hover{
+    background-color: azure;
+    cursor: pointer;
+    color: blue;
+}
+#post-area-div{
+    display: none;
+}
+/*#post-submit{
+    float: right;
+}*/
+#new-post-div{
+    display: none;
+}
+.cursor{
+    cursor: pointer;
+}
+.border-animation{
+    animation-name: green-border;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+.profile{
+    cursor: pointer;
+}
+.text-right{
+    text-align: right;
+}
